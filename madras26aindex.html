@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="EN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOORANIYYA MADRASA JARINAGARA BAJPE</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-transform: uppercase;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        header {
+            background-color: #00563b;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .selection-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .selection-box h2 {
+            color: #00563b;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-boy { background-color: #0275d8; }
+        .btn-girl { background-color: #d9534f; }
+
+        .hidden { display: none; }
+
+        .zone-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .zone-card {
+            background: #eef7f4;
+            border: 2px solid #00563b;
+            padding: 20px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .zone-card:hover { transform: translateY(-3px); }
+
+        .event-title {
+            background-color: #fff200;
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 10px 0 20px 0;
+            display: inline-block;
+        }
+
+        .program-card {
+            background: #fdfdfd;
+            border: 1px solid #ddd;
+            border-left: 6px solid #00563b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .program-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00563b;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .winner-row {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 15px;
+            gap: 10px;
+        }
+
+        .badge {
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            color: white;
+            min-width: 85px;
+            text-align: center;
+        }
+
+        .badge-1st { background-color: #ffb300; color: #000; }
+        .badge-2nd { background-color: #a0a0a0; }
+
+        select.name-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            background: white;
+            text-transform: uppercase;
+        }
+
+        textarea.students-area {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .save-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .back-btn {
+            margin-top: 15px;
+            background: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NOORANIYYA MADRASA JARINAGARA BAJPE</h1>
+    </header>
+
+    <main class="container">
+        <!-- STEP 1: GENDER SELECTION -->
+        <div id="gender-selection" class="selection-box">
+            <h2>SELECT SECTION</h2>
+            <div class="btn-group">
+                <button class="btn btn-boy" onclick="showZones('BOYS')">👦 BOYS SECTION</button>
+                <button class="btn btn-girl" onclick="showZones('GIRLS')">👧 GIRLS SECTION</button>
+            </div>
+        </div>
+
+        <!-- STEP 2: ZONE SELECTION -->
+        <div id="zone-selection" class="selection-box hidden">
+            <h2 id="selected-title"></h2>
+            <p class="subtitle">PLEASE SELECT A ZONE:</p>
+            
+            <div class="zone-grid">
+                <button class="zone-card" onclick="selectZone('ZERO ZONE')">
+                    <h3>ZERO ZONE (1, 2 STD)</h3>
+                </button>
+                <button class="zone-card" onclick="selectZone('GROUND ZONE')">
+                    <h3>GROUND ZONE (3, 4 STD)</h3>
+                </button>
+                <button class="zone-card" onclick="selectZone('MIDD ZONE')">
+                    <h3>MIDD ZONE (5, 6, 7 STD)</h3>
+                </button>
+                <button class="zone-card" onclick="selectZone('HIGH ZONE')">
+                    <h3>HIGH ZONE (8, 9, 10, +1 STD)</h3>
+                </button>
+            </div>
+
+            <button class="back-btn" onclick="goBackToGender()">⬅ BACK TO SECTION</button>
+        </div>
+
+        <!-- STEP 3: CLASS SELECTION -->
+        <div id="class-selection" class="selection-box hidden">
+            <h2 id="class-selection-title"></h2>
+            <p class="subtitle">PLEASE SELECT A CLASS:</p>
+
+            <div id="class-grid" class="zone-grid"></div>
+
+            <button class="back-btn" onclick="goBackToZones()">⬅ BACK TO ZONES</button>
+        </div>
+
+        <!-- STEP 4: CLASS OPTIONS -->
+        <div id="class-options" class="selection-box hidden">
+            <h2 id="class-options-title"></h2>
+            <p class="subtitle">WHAT WOULD YOU LIKE TO DO?</p>
+
+            <button class="btn" style="background:#17a2b8; margin-bottom: 15px;" onclick="openManageStudents()">
+                👥 ADD / EDIT STUDENT LIST
+            </button>
+            <button class="btn" style="background:#00563b;" onclick="openResultsPage()">
+                🏆 SELECT COMPETITION WINNERS
+            </button>
+
+            <br>
+            <button class="back-btn" onclick="goBackToClasses()">⬅ BACK TO CLASSES</button>
+        </div>
+
+        <!-- STEP 5A: MANAGE STUDENTS LIST -->
+        <div id="student-box" class="selection-box hidden">
+            <h2 id="student-box-title"></h2>
+            <p class="subtitle">ENTER STUDENT NAMES (ONE NAME PER LINE):</p>
+
+            <textarea id="students-input" class="students-area" placeholder="EXAMPLE:
+1. MUHAMMED
+2. AHMED
+3. IBRAHIM"></textarea>
+
+            <br>
+            <button class="save-btn" onclick="saveStudentList()">💾 SAVE STUDENT LIST</button><br>
+            <button class="back-btn" onclick="goBackToClassOptions()">⬅ BACK</button>
+        </div>
+
+        <!-- STEP 5B: PROGRAMS & WINNERS SELECT -->
+        <div id="result-box" class="selection-box hidden">
+            <h2 id="result-heading"></h2>
+            <p style="color: #666; font-weight: bold;">JASHNE MILAD-26 | OFF STAGE PROGRAMS</p>
+            
+            <div id="event-tag" class="event-title"></div>
+
+            <div id="programs-container"></div>
+
+            <button class="save-btn" onclick="saveWinners()">💾 SAVE WINNERS</button><br>
+            <button class="back-btn" onclick="goBackToClassOptions()">⬅ BACK</button>
+        </div>
+    </main>
+
+    <script>
+        let selectedGender = '';
+        let selectedZone = '';
+        let selectedClass = '';
+
+        const programsData = {
+            "ZERO ZONE": ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"],
+            "GROUND ZONE": ["📖 QIRA'ATH", "🎨 DRAWING", "💧 PRACTICAL (ULU)", "🧠 MEMORY TEST", "❓ QUIZ", "✍️ ARABIC HAND WRITE"],
+            "MIDD ZONE": ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"],
+            "HIGH ZONE": ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"]
+        };
+
+        function showZones(gender) {
+            selectedGender = gender;
+            document.getElementById('gender-selection').classList.add('hidden');
+            document.getElementById('zone-selection').classList.remove('hidden');
+            document.getElementById('selected-title').innerText = gender + ' SECTION';
+        }
+
+        function selectZone(zoneName) {
+            selectedZone = zoneName;
+            document.getElementById('zone-selection').classList.add('hidden');
+            const classGrid = document.getElementById('class-grid');
+            classGrid.innerHTML = '';
+            document.getElementById('class-selection').classList.remove('hidden');
+            document.getElementById('class-selection-title').innerText = `${selectedGender} SECTION - ${zoneName}`;
+
+            let classes = [];
+            if (zoneName === 'ZERO ZONE') classes = ['1ST STANDARD', '2ND STANDARD'];
+            else if (zoneName === 'GROUND ZONE') classes = ['3RD STANDARD', '4TH STANDARD'];
+            else if (zoneName === 'MIDD ZONE') classes = ['5TH STANDARD', '6TH STANDARD', '7TH STANDARD'];
+            else if (zoneName === 'HIGH ZONE') classes = ['8TH STANDARD', '9TH STANDARD', '10TH STANDARD', '+1 STANDARD'];
+
+            classes.forEach(c => {
+                let btn = document.createElement('button');
+                btn.className = 'zone-card';
+                btn.innerHTML = `<h3>${c}</h3>`;
+                btn.onclick = () => selectClass(c);
+                classGrid.appendChild(btn);
+            });
+        }
+
+        function selectClass(className) {
+            selectedClass = className;
+            document.getElementById('class-selection').classList.add('hidden');
+            document.getElementById('class-options').classList.remove('hidden');
+            document.getElementById('class-options-title').innerText = `${selectedGender} - ${selectedClass}`;
+        }
+
+        function openManageStudents() {
+            document.getElementById('class-options').classList.add('hidden');
+            document.getElementById('student-box').classList.remove('hidden');
+            document.getElementById('student-box-title').innerText = `MANAGE STUDENTS LIST (${selectedGender} - ${selectedClass})`;
+
+            const studentKey = `${selectedGender}_${selectedClass}_students`;
+            const savedStudents = localStorage.getItem(studentKey) || '';
+            document.getElementById('students-input').value = savedStudents.toUpperCase();
+        }
+
+        function saveStudentList() {
+            const studentKey = `${selectedGender}_${selectedClass}_students`;
+            const textVal = document.getElementById('students-input').value.toUpperCase();
+            localStorage.setItem(studentKey, textVal);
+            alert('STUDENT LIST SAVED SUCCESSFULLY!');
+        }
+
+        function openResultsPage() {
+            document.getElementById('class-options').classList.add('hidden');
+            document.getElementById('result-box').classList.remove('hidden');
+            
+            document.getElementById('result-heading').innerText = `${selectedGender} SECTION`;
+            document.getElementById('event-tag').innerText = `${selectedZone} - ${selectedClass}`;
+
+            const container = document.getElementById('programs-container');
+            container.innerHTML = '';
+
+            const studentKey = `${selectedGender}_${selectedClass}_students`;
+            const rawStudents = localStorage.getItem(studentKey) || '';
+            const studentList = rawStudents.split('\n').map(s => s.trim().toUpperCase()).filter(s => s !== '');
+
+            const activeList = programsData[selectedZone] || [];
+
+            activeList.forEach((prog, index) => {
+                const storageKey1 = `${selectedGender}_${selectedClass}_${prog}_1st`;
+                const storageKey2 = `${selectedGender}_${selectedClass}_${prog}_2nd`;
+
+                const saved1st = localStorage.getItem(storageKey1) || '';
+                const saved2nd = localStorage.getItem(storageKey2) || '';
+
+                let optionsHtml = `<option value="">-- SELECT STUDENT --</option>`;
+                studentList.forEach(st => {
+                    optionsHtml += `<option value="${st}">${st}</option>`;
+                });
+
+                const card = document.createElement('div');
+                card.className = 'program-card';
+                card.innerHTML = `
+                    <div class="program-name">${prog}</div>
+                    <div class="winner-row">
+                        <span class="badge badge-1st">🥇 1ST PRIZE</span>
+                        <select class="name-select" id="select_1st_${index}">
+                            ${optionsHtml}
+                        </select>
+                    </div>
+                    <div class="winner-row">
+                        <span class="badge badge-2nd">🥈 2ND PRIZE</span>
+                        <select class="name-select" id="select_2nd_${index}">
+                            ${optionsHtml}
+                        </select>
+                    </div>
+                `;
+                container.appendChild(card);
+
+                if (saved1st) document.getElementById(`select_1st_${index}`).value = saved1st;
+                if (saved2nd) document.getElementById(`select_2nd_${index}`).value = saved2nd;
+            });
+        }
+
+        function saveWinners() {
+            const activeList = programsData[selectedZone] || [];
+
+            activeList.forEach((prog, index) => {
+                const val1st = document.getElementById(`select_1st_${index}`).value;
+                const val2nd = document.getElementById(`select_2nd_${index}`).value;
+
+                localStorage.setItem(`${selectedGender}_${selectedClass}_${prog}_1st`, val1st);
+                localStorage.setItem(`${selectedGender}_${selectedClass}_${prog}_2nd`, val2nd);
+            });
+
+            alert('WINNERS SAVED SUCCESSFULLY!');
+        }
+
+        function goBackToGender() {
+            document.getElementById('zone-selection').classList.add('hidden');
+            document.getElementById('gender-selection').classList.remove('hidden');
+        }
+
+        function goBackToZones() {
+            document.getElementById('class-selection').classList.add('hidden');
+            document.getElementById('zone-selection').classList.remove('hidden');
+        }
+
+        function goBackToClasses() {
+            document.getElementById('class-options').classList.add('hidden');
+            document.getElementById('class-selection').classList.remove('hidden');
+        }
+
+        function goBackToClassOptions() {
+            document.getElementById('student-box').classList.add('hidden');
+            document.getElementById('result-box').classList.add('hidden');
+            document.getElementById('class-options').classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>
