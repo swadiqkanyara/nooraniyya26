@@ -29,8 +29,42 @@
 
         .container {
             max-width: 650px;
-            margin: 30px auto;
+            margin: 20px auto;
             padding: 0 15px;
+        }
+
+        /* TOP NAVIGATION BAR (ALWAYS VISIBLE AT TOP CENTER) */
+        .top-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #111;
+        }
+
+        .btn-home-nav {
+            background: #00563b;
+        }
+
+        .btn-home-nav:hover {
+            background: #003826;
         }
 
         .selection-box {
@@ -51,24 +85,50 @@
             margin-bottom: 20px;
         }
 
-        .btn {
-            border: none;
-            padding: 15px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            color: white;
-            width: 100%;
-            margin-bottom: 12px;
+        /* MAIN MENU SQUARE BOX STYLING */
+        .menu-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: center;
+            margin-top: 15px;
         }
 
-        .btn-view { background-color: #00563b; }
-        .btn-view:hover { background-color: #003826; }
-        .btn-students { background-color: #17a2b8; }
-        .btn-students:hover { background-color: #117a8b; }
-        .btn-edit { background-color: #d9534f; }
-        .btn-edit:hover { background-color: #c9302c; }
+        .square-card {
+            width: 100%;
+            max-width: 260px;
+            height: 110px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+
+        .square-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.18);
+        }
+
+        .square-card .icon {
+            font-size: 28px;
+        }
+
+        .square-card .title {
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .box-view { background: linear-gradient(135deg, #00563b, #008855); }
+        .box-edit { background: linear-gradient(135deg, #d9534f, #c9302c); }
+        .box-students { background: linear-gradient(135deg, #17a2b8, #117a8b); }
 
         .hidden { display: none; }
 
@@ -182,16 +242,6 @@
             cursor: pointer;
             margin-top: 10px;
         }
-
-        .back-btn {
-            margin-top: 15px;
-            background: #555;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -201,14 +251,33 @@
     </header>
 
     <main class="container">
-        <!-- MAIN HOME MENU -->
+        <!-- TOP MIDDLE NAVIGATION BAR -->
+        <div class="top-nav">
+            <button id="nav-back-btn" class="nav-btn hidden" onclick="goBackHandler()">⬅ BACK</button>
+            <button id="nav-home-btn" class="nav-btn btn-home-nav hidden" onclick="goHome()">🏠 MAIN MENU</button>
+        </div>
+
+        <!-- MAIN HOME MENU WITH SQUARE BOXES -->
         <div id="home-menu" class="selection-box">
             <h2>MAIN MENU</h2>
             <p class="subtitle">SELECT AN OPTION TO PROCEED:</p>
             
-            <button class="btn btn-view" onclick="openViewClassSelect()">🏆 VIEW ALL RESULTS</button>
-            <button class="btn btn-edit" onclick="openAddClassSelect()">✍️ ADD / EDIT RESULTS</button>
-            <button class="btn btn-students" onclick="openStudentsClassSelect()">👥 MANAGE STUDENT LIST</button>
+            <div class="menu-grid">
+                <button class="square-card box-view" onclick="openViewClassSelect()">
+                    <span class="icon">🏆</span>
+                    <span class="title">VIEW ALL RESULTS</span>
+                </button>
+
+                <button class="square-card box-edit" onclick="openAddClassSelect()">
+                    <span class="icon">✍️</span>
+                    <span class="title">ADD / EDIT RESULTS</span>
+                </button>
+
+                <button class="square-card box-students" onclick="openStudentsClassSelect()">
+                    <span class="icon">👥</span>
+                    <span class="title">MANAGE STUDENT LIST</span>
+                </button>
+            </div>
         </div>
 
         <!-- 1. VIEW RESULTS: CLASS SELECT -->
@@ -216,7 +285,6 @@
             <h2>VIEW RESULTS</h2>
             <p class="subtitle">SELECT CLASS TO VIEW WINNERS:</p>
             <div class="zone-grid" id="view-class-grid"></div>
-            <button class="back-btn" onclick="goHome()">⬅ MAIN MENU</button>
         </div>
 
         <!-- 1. VIEW RESULTS: DISPLAY -->
@@ -225,7 +293,6 @@
             <p style="color: #666; font-weight: bold;">JASHNE MILAD-26 | RESULTS</p>
             <div id="view-event-tag" class="event-title"></div>
             <div id="view-container"></div>
-            <button class="back-btn" onclick="openViewClassSelect()">⬅ BACK TO CLASSES</button>
         </div>
 
         <!-- 2. ADD / EDIT RESULTS: CLASS SELECT -->
@@ -233,7 +300,6 @@
             <h2>ADD / EDIT RESULTS</h2>
             <p class="subtitle">SELECT CLASS TO ENTER WINNERS:</p>
             <div class="zone-grid" id="add-class-grid"></div>
-            <button class="back-btn" onclick="goHome()">⬅ MAIN MENU</button>
         </div>
 
         <!-- 2. ADD / EDIT RESULTS: FORM -->
@@ -244,8 +310,7 @@
 
             <div id="add-programs-container"></div>
 
-            <button class="save-btn" onclick="saveAllResults()">💾 SAVE RESULTS</button><br>
-            <button class="back-btn" onclick="openAddClassSelect()">⬅ BACK TO CLASSES</button>
+            <button class="save-btn" onclick="saveAllResults()">💾 SAVE RESULTS</button>
         </div>
 
         <!-- 3. MANAGE STUDENT LIST: CLASS SELECT -->
@@ -253,7 +318,6 @@
             <h2>MANAGE STUDENT LIST</h2>
             <p class="subtitle">SELECT CLASS TO ENTER STUDENTS:</p>
             <div class="zone-grid" id="students-class-grid"></div>
-            <button class="back-btn" onclick="goHome()">⬅ MAIN MENU</button>
         </div>
 
         <!-- 3. MANAGE STUDENT LIST: FORM -->
@@ -266,31 +330,55 @@
             <p style="text-align:left; font-weight:bold; color:#d9534f;">👧 GIRLS NAMES (ONE PER LINE):</p>
             <textarea id="girls-list-input" class="students-area" placeholder="ENTER GIRLS NAMES HERE..."></textarea>
 
-            <button class="save-btn" onclick="saveStudentLists()">💾 SAVE STUDENT LISTS</button><br>
-            <button class="back-btn" onclick="openStudentsClassSelect()">⬅ BACK TO CLASSES</button>
+            <button class="save-btn" onclick="saveStudentLists()">💾 SAVE STUDENT LISTS</button>
         </div>
     </main>
 
     <script>
         const programsData = {
-            "CLASS 1": { zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
-            "CLASS 2 - A": { zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
-            "CLASS 2 - B": { zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
-            "CLASS 3": { zone: "GROUND ZONE", progs: ["📖 QIRA'ATH", "🎨 DRAWING", "💧 PRACTICAL (ULU)", "🧠 MEMORY TEST", "❓ QUIZ", "✍️ ARABIC HAND WRITE"] },
-            "CLASS 4": { zone: "GROUND ZONE", progs: ["📖 QIRA'ATH", "🎨 DRAWING", "💧 PRACTICAL (ULU)", "🧠 MEMORY TEST", "❓ QUIZ", "✍️ ARABIC HAND WRITE"] },
-            "CLASS 5 - A": { zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
-            "CLASS 5 - B": { zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
-            "CLASS 6": { zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
-            "CLASS 7": { zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
-            "CLASS 8": { zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
-            "CLASS 9": { zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
-            "CLASS 10": { zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
-            "CLASS +1": { zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] }
+            "CLASS 1": { oldKey: "1ST STANDARD", zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 2 - A": { oldKey: "2ND STANDARD - A", zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 2 - B": { oldKey: "2ND STANDARD - B", zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 3": { oldKey: "3RD STANDARD", zone: "GROUND ZONE", progs: ["📖 QIRA'ATH", "🎨 DRAWING", "💧 PRACTICAL (ULU)", "🧠 MEMORY TEST", "❓ QUIZ", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 4": { oldKey: "4TH STANDARD", zone: "GROUND ZONE", progs: ["📖 QIRA'ATH", "🎨 DRAWING", "💧 PRACTICAL (ULU)", "🧠 MEMORY TEST", "❓ QUIZ", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 5 - A": { oldKey: "5TH STANDARD - A", zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
+            "CLASS 5 - B": { oldKey: "5TH STANDARD - B", zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
+            "CLASS 6": { oldKey: "6TH STANDARD", zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
+            "CLASS 7": { oldKey: "7TH STANDARD", zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
+            "CLASS 8": { oldKey: "8TH STANDARD", zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
+            "CLASS 9": { oldKey: "9TH STANDARD", zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
+            "CLASS 10": { oldKey: "10TH STANDARD", zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
+            "CLASS +1": { oldKey: "+1 STANDARD", zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] }
         };
 
         const allClasses = Object.keys(programsData);
-
         let currentActiveClass = '';
+        let currentScreen = 'home';
+
+        function getSavedItem(newKey, oldKey) {
+            return localStorage.getItem(newKey) || (oldKey ? localStorage.getItem(oldKey) : null) || '';
+        }
+
+        function updateTopNav(screenState) {
+            currentScreen = screenState;
+            const homeNav = document.getElementById('nav-home-btn');
+            const backNav = document.getElementById('nav-back-btn');
+
+            if (screenState === 'home') {
+                homeNav.classList.add('hidden');
+                backNav.classList.add('hidden');
+            } else {
+                homeNav.classList.remove('hidden');
+                backNav.classList.remove('hidden');
+            }
+        }
+
+        function goBackHandler() {
+            if (currentScreen === 'view-display') openViewClassSelect();
+            else if (currentScreen === 'add-form') openAddClassSelect();
+            else if (currentScreen === 'students-form') openStudentsClassSelect();
+            else goHome();
+        }
 
         function hideAll() {
             document.querySelectorAll('.selection-box').forEach(el => el.classList.add('hidden'));
@@ -299,6 +387,7 @@
         function goHome() {
             hideAll();
             document.getElementById('home-menu').classList.remove('hidden');
+            updateTopNav('home');
         }
 
         function renderClassGrid(containerId, clickCallback) {
@@ -318,6 +407,7 @@
             hideAll();
             document.getElementById('view-class-box').classList.remove('hidden');
             renderClassGrid('view-class-grid', showViewDisplay);
+            updateTopNav('view-classes');
         }
 
         function showViewDisplay(cls) {
@@ -326,17 +416,19 @@
             document.getElementById('view-display-box').classList.remove('hidden');
             document.getElementById('view-display-title').innerText = cls;
             document.getElementById('view-event-tag').innerText = programsData[cls].zone;
+            updateTopNav('view-display');
 
             const container = document.getElementById('view-container');
             container.innerHTML = '';
 
             const progs = programsData[cls].progs;
+            const oldK = programsData[cls].oldKey;
 
             progs.forEach(prog => {
-                const b1 = localStorage.getItem(`${cls}_${prog}_B1`) || 'NOT ANNOUNCED';
-                const b2 = localStorage.getItem(`${cls}_${prog}_B2`) || 'NOT ANNOUNCED';
-                const g1 = localStorage.getItem(`${cls}_${prog}_G1`) || 'NOT ANNOUNCED';
-                const g2 = localStorage.getItem(`${cls}_${prog}_G2`) || 'NOT ANNOUNCED';
+                const b1 = getSavedItem(`${cls}_${prog}_B1`, `${oldK}_${prog}_B1`) || getSavedItem(`${cls}_${prog}_BOYS_1ST`, `${oldK}_${prog}_BOYS_1ST`) || 'NOT ANNOUNCED';
+                const b2 = getSavedItem(`${cls}_${prog}_B2`, `${oldK}_${prog}_B2`) || getSavedItem(`${cls}_${prog}_BOYS_2ND`, `${oldK}_${prog}_BOYS_2ND`) || 'NOT ANNOUNCED';
+                const g1 = getSavedItem(`${cls}_${prog}_G1`, `${oldK}_${prog}_G1`) || getSavedItem(`${cls}_${prog}_GIRLS_1ST`, `${oldK}_${prog}_GIRLS_1ST`) || 'NOT ANNOUNCED';
+                const g2 = getSavedItem(`${cls}_${prog}_G2`, `${oldK}_${prog}_G2`) || getSavedItem(`${cls}_${prog}_GIRLS_2ND`, `${oldK}_${prog}_GIRLS_2ND`) || 'NOT ANNOUNCED';
 
                 const card = document.createElement('div');
                 card.className = 'program-card';
@@ -368,6 +460,7 @@
             hideAll();
             document.getElementById('add-class-box').classList.remove('hidden');
             renderClassGrid('add-class-grid', openAddForm);
+            updateTopNav('add-classes');
         }
 
         function openAddForm(cls) {
@@ -376,23 +469,25 @@
             document.getElementById('add-form-box').classList.remove('hidden');
             document.getElementById('add-form-title').innerText = `ADD RESULTS - ${cls}`;
             document.getElementById('add-event-tag').innerText = programsData[cls].zone;
+            updateTopNav('add-form');
 
             const container = document.getElementById('add-programs-container');
             container.innerHTML = '';
 
             const progs = programsData[cls].progs;
+            const oldK = programsData[cls].oldKey;
 
-            const rawBoys = localStorage.getItem(`${cls}_BOYS_STUDENTS`) || '';
-            const rawGirls = localStorage.getItem(`${cls}_GIRLS_STUDENTS`) || '';
+            const rawBoys = getSavedItem(`${cls}_BOYS_STUDENTS`, `${oldK}_BOYS_STUDENTS`) || getSavedItem(`${cls}_BOYS_students`, `${oldK}_BOYS_students`);
+            const rawGirls = getSavedItem(`${cls}_GIRLS_STUDENTS`, `${oldK}_GIRLS_STUDENTS`) || getSavedItem(`${cls}_GIRLS_students`, `${oldK}_GIRLS_students`);
 
             const boysList = rawBoys.split('\n').map(s => s.trim().toUpperCase()).filter(s => s !== '');
             const girlsList = rawGirls.split('\n').map(s => s.trim().toUpperCase()).filter(s => s !== '');
 
             progs.forEach((prog, index) => {
-                const b1 = localStorage.getItem(`${cls}_${prog}_B1`) || '';
-                const b2 = localStorage.getItem(`${cls}_${prog}_B2`) || '';
-                const g1 = localStorage.getItem(`${cls}_${prog}_G1`) || '';
-                const g2 = localStorage.getItem(`${cls}_${prog}_G2`) || '';
+                const b1 = getSavedItem(`${cls}_${prog}_B1`, `${oldK}_${prog}_B1`);
+                const b2 = getSavedItem(`${cls}_${prog}_B2`, `${oldK}_${prog}_B2`);
+                const g1 = getSavedItem(`${cls}_${prog}_G1`, `${oldK}_${prog}_G1`);
+                const g2 = getSavedItem(`${cls}_${prog}_G2`, `${oldK}_${prog}_G2`);
 
                 let boysOpts = `<option value="">-- SELECT BOY STUDENT --</option>`;
                 boysList.forEach(st => boysOpts += `<option value="${st}">${st}</option>`);
@@ -435,6 +530,7 @@
         function saveAllResults() {
             const cls = currentActiveClass;
             const progs = programsData[cls].progs;
+            const oldK = programsData[cls].oldKey;
 
             progs.forEach((prog, index) => {
                 const b1 = document.getElementById(`b1_${index}`).value;
@@ -446,6 +542,13 @@
                 localStorage.setItem(`${cls}_${prog}_B2`, b2);
                 localStorage.setItem(`${cls}_${prog}_G1`, g1);
                 localStorage.setItem(`${cls}_${prog}_G2`, g2);
+
+                if (oldK) {
+                    localStorage.setItem(`${oldK}_${prog}_B1`, b1);
+                    localStorage.setItem(`${oldK}_${prog}_B2`, b2);
+                    localStorage.setItem(`${oldK}_${prog}_G1`, g1);
+                    localStorage.setItem(`${oldK}_${prog}_G2`, g2);
+                }
             });
 
             alert('RESULTS SAVED SUCCESSFULLY!');
@@ -456,6 +559,7 @@
             hideAll();
             document.getElementById('students-class-box').classList.remove('hidden');
             renderClassGrid('students-class-grid', openStudentsInput);
+            updateTopNav('students-classes');
         }
 
         function openStudentsInput(cls) {
@@ -463,9 +567,11 @@
             hideAll();
             document.getElementById('students-input-box').classList.remove('hidden');
             document.getElementById('students-input-title').innerText = `STUDENT LIST - ${cls}`;
+            updateTopNav('students-form');
 
-            const savedBoys = localStorage.getItem(`${cls}_BOYS_STUDENTS`) || '';
-            const savedGirls = localStorage.getItem(`${cls}_GIRLS_STUDENTS`) || '';
+            const oldK = programsData[cls].oldKey;
+            const savedBoys = getSavedItem(`${cls}_BOYS_STUDENTS`, `${oldK}_BOYS_STUDENTS`);
+            const savedGirls = getSavedItem(`${cls}_GIRLS_STUDENTS`, `${oldK}_GIRLS_STUDENTS`);
 
             document.getElementById('boys-list-input').value = savedBoys;
             document.getElementById('girls-list-input').value = savedGirls;
@@ -473,11 +579,18 @@
 
         function saveStudentLists() {
             const cls = currentActiveClass;
+            const oldK = programsData[cls].oldKey;
+
             const boysVal = document.getElementById('boys-list-input').value.toUpperCase();
             const girlsVal = document.getElementById('girls-list-input').value.toUpperCase();
 
             localStorage.setItem(`${cls}_BOYS_STUDENTS`, boysVal);
             localStorage.setItem(`${cls}_GIRLS_STUDENTS`, girlsVal);
+
+            if (oldK) {
+                localStorage.setItem(`${oldK}_BOYS_STUDENTS`, boysVal);
+                localStorage.setItem(`${oldK}_GIRLS_STUDENTS`, girlsVal);
+            }
 
             alert('STUDENT LISTS SAVED SUCCESSFULLY!');
         }
