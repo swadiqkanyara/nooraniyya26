@@ -63,8 +63,8 @@
             margin-bottom: 12px;
         }
 
-        .btn-main { background-color: #00563b; }
-        .btn-main:hover { background-color: #003826; }
+        .btn-view { background-color: #00563b; }
+        .btn-view:hover { background-color: #003826; }
         .btn-students { background-color: #17a2b8; }
         .btn-students:hover { background-color: #117a8b; }
         .btn-edit { background-color: #d9534f; }
@@ -135,7 +135,7 @@
             font-weight: bold;
             font-size: 11px;
             color: white;
-            min-width: 90px;
+            min-width: 95px;
             text-align: center;
         }
 
@@ -205,55 +205,58 @@
         <div id="home-menu" class="selection-box">
             <h2>MAIN MENU</h2>
             <p class="subtitle">SELECT AN OPTION TO PROCEED:</p>
-            <button class="btn btn-main" onclick="openViewResultsMode()">🏆 VIEW RESULTS</button>
-            <button class="btn btn-students" onclick="openStudentsMode()">👥 MANAGE STUDENT LIST</button>
-            <button class="btn btn-edit" onclick="openAddResultsMode()">⚙️ ADD / EDIT RESULTS (ADMIN)</button>
+            
+            <button class="btn btn-view" onclick="openViewClassSelect()">🏆 VIEW ALL RESULTS</button>
+            <button class="btn btn-edit" onclick="openAddClassSelect()">✍️ ADD / EDIT RESULTS</button>
+            <button class="btn btn-students" onclick="openStudentsClassSelect()">👥 MANAGE STUDENT LIST</button>
         </div>
 
-        <!-- MODE 1: VIEW RESULTS - STEP 1 (GENDER) -->
-        <div id="view-gender" class="selection-box hidden">
-            <h2>VIEW RESULTS - SELECT SECTION</h2>
-            <div class="zone-grid">
-                <button class="zone-card" onclick="selectViewGender('BOYS')"><h3>👦 BOYS SECTION</h3></button>
-                <button class="zone-card" onclick="selectViewGender('GIRLS')"><h3>👧 GIRLS SECTION</h3></button>
-            </div>
+        <!-- 1. VIEW RESULTS: CLASS SELECT -->
+        <div id="view-class-box" class="selection-box hidden">
+            <h2>VIEW RESULTS</h2>
+            <p class="subtitle">SELECT CLASS TO VIEW WINNERS:</p>
+            <div class="zone-grid" id="view-class-grid"></div>
             <button class="back-btn" onclick="goHome()">⬅ MAIN MENU</button>
         </div>
 
-        <!-- MODE 1: VIEW RESULTS - STEP 2 (ZONE) -->
-        <div id="view-zone" class="selection-box hidden">
-            <h2 id="view-zone-title"></h2>
-            <p class="subtitle">SELECT A ZONE:</p>
-            <div class="zone-grid" id="view-zone-grid"></div>
-            <button class="back-btn" onclick="goBackToViewGender()">⬅ BACK</button>
-        </div>
-
-        <!-- MODE 1: VIEW RESULTS - STEP 3 (CLASS) -->
-        <div id="view-class" class="selection-box hidden">
-            <h2 id="view-class-title"></h2>
-            <p class="subtitle">SELECT A CLASS:</p>
-            <div class="zone-grid" id="view-class-grid"></div>
-            <button class="back-btn" onclick="goBackToViewZone()">⬅ BACK</button>
-        </div>
-
-        <!-- MODE 1: VIEW RESULTS DISPLAY -->
-        <div id="view-display" class="selection-box hidden">
-            <h2 id="view-display-heading"></h2>
+        <!-- 1. VIEW RESULTS: DISPLAY -->
+        <div id="view-display-box" class="selection-box hidden">
+            <h2 id="view-display-title"></h2>
             <p style="color: #666; font-weight: bold;">JASHNE MILAD-26 | RESULTS</p>
             <div id="view-event-tag" class="event-title"></div>
             <div id="view-container"></div>
-            <button class="back-btn" onclick="goBackToViewClass()">⬅ BACK TO CLASSES</button>
+            <button class="back-btn" onclick="openViewClassSelect()">⬅ BACK TO CLASSES</button>
         </div>
 
-        <!-- MODE 2: MANAGE STUDENTS LIST - CLASS SELECTION -->
-        <div id="students-class-select" class="selection-box hidden">
+        <!-- 2. ADD / EDIT RESULTS: CLASS SELECT -->
+        <div id="add-class-box" class="selection-box hidden">
+            <h2>ADD / EDIT RESULTS</h2>
+            <p class="subtitle">SELECT CLASS TO ENTER WINNERS:</p>
+            <div class="zone-grid" id="add-class-grid"></div>
+            <button class="back-btn" onclick="goHome()">⬅ MAIN MENU</button>
+        </div>
+
+        <!-- 2. ADD / EDIT RESULTS: FORM -->
+        <div id="add-form-box" class="selection-box hidden">
+            <h2 id="add-form-title"></h2>
+            <div id="add-event-tag" class="event-title"></div>
+            <p class="subtitle">SELECT BOYS & GIRLS WINNERS FOR EACH PROGRAM:</p>
+
+            <div id="add-programs-container"></div>
+
+            <button class="save-btn" onclick="saveAllResults()">💾 SAVE RESULTS</button><br>
+            <button class="back-btn" onclick="openAddClassSelect()">⬅ BACK TO CLASSES</button>
+        </div>
+
+        <!-- 3. MANAGE STUDENT LIST: CLASS SELECT -->
+        <div id="students-class-box" class="selection-box hidden">
             <h2>MANAGE STUDENT LIST</h2>
-            <p class="subtitle">SELECT CLASS TO ADD STUDENT NAMES:</p>
+            <p class="subtitle">SELECT CLASS TO ENTER STUDENTS:</p>
             <div class="zone-grid" id="students-class-grid"></div>
             <button class="back-btn" onclick="goHome()">⬅ MAIN MENU</button>
         </div>
 
-        <!-- MODE 2: MANAGE STUDENTS LIST - INPUT FORM -->
+        <!-- 3. MANAGE STUDENT LIST: FORM -->
         <div id="students-input-box" class="selection-box hidden">
             <h2 id="students-input-title"></h2>
             
@@ -264,65 +267,30 @@
             <textarea id="girls-list-input" class="students-area" placeholder="ENTER GIRLS NAMES HERE..."></textarea>
 
             <button class="save-btn" onclick="saveStudentLists()">💾 SAVE STUDENT LISTS</button><br>
-            <button class="back-btn" onclick="openStudentsMode()">⬅ BACK TO CLASSES</button>
-        </div>
-
-        <!-- MODE 3: ADD RESULTS - CLASS SELECTION -->
-        <div id="add-class" class="selection-box hidden">
-            <h2>ADD / EDIT RESULTS</h2>
-            <p class="subtitle">SELECT A CLASS TO ADD RESULTS FOR ALL PROGRAMS:</p>
-            <div class="zone-grid">
-                <button class="zone-card" onclick="openAddResultsForClass('1ST STANDARD', 'ZERO ZONE')"><h3>1ST STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('2ND STANDARD', 'ZERO ZONE')"><h3>2ND STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('3RD STANDARD', 'GROUND ZONE')"><h3>3RD STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('4TH STANDARD', 'GROUND ZONE')"><h3>4TH STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('5TH STANDARD', 'MIDD ZONE')"><h3>5TH STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('6TH STANDARD', 'MIDD ZONE')"><h3>6TH STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('7TH STANDARD', 'MIDD ZONE')"><h3>7TH STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('8TH STANDARD', 'HIGH ZONE')"><h3>8TH STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('9TH STANDARD', 'HIGH ZONE')"><h3>9TH STANDARD</h3></button>
-                <button class="zone-card" onclick="openAddResultsForClass('10TH STANDARD', 'HIGH ZONE')"><h3>10TH STANDARD</h3></button>
-                <button class="zone-card" style="grid-column: span 2;" onclick="openAddResultsForClass('+1 STANDARD', 'HIGH ZONE')"><h3>+1 STANDARD</h3></button>
-            </div>
-            <button class="back-btn" onclick="goHome()">⬅ MAIN MENU</button>
-        </div>
-
-        <!-- MODE 3: ADD RESULTS FORM -->
-        <div id="add-form" class="selection-box hidden">
-            <h2 id="add-form-title"></h2>
-            <div id="add-event-tag" class="event-title"></div>
-            <p class="subtitle">SELECT BOYS & GIRLS WINNERS FOR EACH PROGRAM:</p>
-
-            <div id="add-programs-container"></div>
-
-            <button class="save-btn" onclick="saveAllResults()">💾 SAVE RESULTS</button><br>
-            <button class="back-btn" onclick="goBackToAddClasses()">⬅ BACK TO CLASSES</button>
+            <button class="back-btn" onclick="openStudentsClassSelect()">⬅ BACK TO CLASSES</button>
         </div>
     </main>
 
     <script>
         const programsData = {
-            "ZERO ZONE": ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"],
-            "GROUND ZONE": ["📖 QIRA'ATH", "🎨 DRAWING", "💧 PRACTICAL (ULU)", "🧠 MEMORY TEST", "❓ QUIZ", "✍️ ARABIC HAND WRITE"],
-            "MIDD ZONE": ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"],
-            "HIGH ZONE": ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"]
+            "CLASS 1": { zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 2 - A": { zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 2 - B": { zone: "ZERO ZONE", progs: ["🎨 DRAWING", "🪑 NA'ATH CHAIR", "🧠 MEMORY TEST", "📝 ARABIC DICTATION", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 3": { zone: "GROUND ZONE", progs: ["📖 QIRA'ATH", "🎨 DRAWING", "💧 PRACTICAL (ULU)", "🧠 MEMORY TEST", "❓ QUIZ", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 4": { zone: "GROUND ZONE", progs: ["📖 QIRA'ATH", "🎨 DRAWING", "💧 PRACTICAL (ULU)", "🧠 MEMORY TEST", "❓ QUIZ", "✍️ ARABIC HAND WRITE"] },
+            "CLASS 5 - A": { zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
+            "CLASS 5 - B": { zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
+            "CLASS 6": { zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
+            "CLASS 7": { zone: "MIDD ZONE", progs: ["📖 QIRA'ATH", "✍️ ARABIC HAND WRITE (PEN)", "🖼️ POSTER DESIGNING", "🧼 PRACTICAL (TAYAMMUM)", "📜 HIFL", "❓ QUIZ", "✂️ CRAFT", "📖 STORY TELLING", "🎵 MOILNAJI"] },
+            "CLASS 8": { zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
+            "CLASS 9": { zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
+            "CLASS 10": { zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] },
+            "CLASS +1": { zone: "HIGH ZONE", progs: ["📖 QIRA'ATH", "📜 HIFL", "📖 STORY TELLING", "🎵 MOILANJI", "✍️ KAVANA RACHANE & VAACHANE", "❓ QUIZ", "📜 BADR MOULID READ", "♻️ WEALTH FROM WASTE"] }
         };
 
-        const zonesList = {
-            "ZERO ZONE": ['1ST STANDARD', '2ND STANDARD'],
-            "GROUND ZONE": ['3RD STANDARD', '4TH STANDARD'],
-            "MIDD ZONE": ['5TH STANDARD', '6TH STANDARD', '7TH STANDARD'],
-            "HIGH ZONE": ['8TH STANDARD', '9TH STANDARD', '10TH STANDARD', '+1 STANDARD']
-        };
+        const allClasses = Object.keys(programsData);
 
-        const allClasses = ['1ST STANDARD', '2ND STANDARD', '3RD STANDARD', '4TH STANDARD', '5TH STANDARD', '6TH STANDARD', '7TH STANDARD', '8TH STANDARD', '9TH STANDARD', '10TH STANDARD', '+1 STANDARD'];
-
-        let currentViewGender = '';
-        let currentViewZone = '';
-        let currentViewClass = '';
-        let currentAddClass = '';
-        let currentAddZone = '';
-        let currentStudentClass = '';
+        let currentActiveClass = '';
 
         function hideAll() {
             document.querySelectorAll('.selection-box').forEach(el => el.classList.add('hidden'));
@@ -333,143 +301,86 @@
             document.getElementById('home-menu').classList.remove('hidden');
         }
 
-        // ================= VIEW RESULTS MODE =================
-        function openViewResultsMode() {
-            hideAll();
-            document.getElementById('view-gender').classList.remove('hidden');
-        }
-
-        function selectViewGender(gender) {
-            currentViewGender = gender;
-            hideAll();
-            document.getElementById('view-zone').classList.remove('hidden');
-            document.getElementById('view-zone-title').innerText = `${gender} SECTION - ZONES`;
-
-            const grid = document.getElementById('view-zone-grid');
+        function renderClassGrid(containerId, clickCallback) {
+            const grid = document.getElementById(containerId);
             grid.innerHTML = '';
-            Object.keys(zonesList).forEach(zone => {
-                let btn = document.createElement('button');
-                btn.className = 'zone-card';
-                btn.innerHTML = `<h3>${zone}</h3>`;
-                btn.onclick = () => selectViewZone(zone);
-                grid.appendChild(btn);
-            });
-        }
-
-        function selectViewZone(zone) {
-            currentViewZone = zone;
-            hideAll();
-            document.getElementById('view-class').classList.remove('hidden');
-            document.getElementById('view-class-title').innerText = `${currentViewGender} - ${zone}`;
-
-            const grid = document.getElementById('view-class-grid');
-            grid.innerHTML = '';
-            zonesList[zone].forEach(cls => {
+            allClasses.forEach(cls => {
                 let btn = document.createElement('button');
                 btn.className = 'zone-card';
                 btn.innerHTML = `<h3>${cls}</h3>`;
-                btn.onclick = () => showFinalViewResults(cls);
+                btn.onclick = () => clickCallback(cls);
                 grid.appendChild(btn);
             });
         }
 
-        function showFinalViewResults(cls) {
-            currentViewClass = cls;
+        // ================= 1. VIEW RESULTS =================
+        function openViewClassSelect() {
             hideAll();
-            document.getElementById('view-display').classList.remove('hidden');
-            document.getElementById('view-display-heading').innerText = `${currentViewGender} SECTION`;
-            document.getElementById('view-event-tag').innerText = `${currentViewZone} - ${cls}`;
+            document.getElementById('view-class-box').classList.remove('hidden');
+            renderClassGrid('view-class-grid', showViewDisplay);
+        }
+
+        function showViewDisplay(cls) {
+            currentActiveClass = cls;
+            hideAll();
+            document.getElementById('view-display-box').classList.remove('hidden');
+            document.getElementById('view-display-title').innerText = cls;
+            document.getElementById('view-event-tag').innerText = programsData[cls].zone;
 
             const container = document.getElementById('view-container');
             container.innerHTML = '';
 
-            const progs = programsData[currentViewZone] || [];
+            const progs = programsData[cls].progs;
 
             progs.forEach(prog => {
-                const key1st = `${cls}_${prog}_${currentViewGender}_1ST`;
-                const key2nd = `${cls}_${prog}_${currentViewGender}_2ND`;
-
-                const val1st = localStorage.getItem(key1st) || 'NOT ANNOUNCED';
-                const val2nd = localStorage.getItem(key2nd) || 'NOT ANNOUNCED';
+                const b1 = localStorage.getItem(`${cls}_${prog}_B1`) || 'NOT ANNOUNCED';
+                const b2 = localStorage.getItem(`${cls}_${prog}_B2`) || 'NOT ANNOUNCED';
+                const g1 = localStorage.getItem(`${cls}_${prog}_G1`) || 'NOT ANNOUNCED';
+                const g2 = localStorage.getItem(`${cls}_${prog}_G2`) || 'NOT ANNOUNCED';
 
                 const card = document.createElement('div');
                 card.className = 'program-card';
                 card.innerHTML = `
                     <div class="program-name">${prog}</div>
                     <div class="winner-row">
-                        <span class="badge ${currentViewGender === 'BOYS' ? 'badge-boy-1st' : 'badge-girl-1st'}">🥇 1ST PRIZE</span>
-                        <span class="winner-display-name">${val1st}</span>
+                        <span class="badge badge-boy-1st">👦 BOY 1ST</span>
+                        <span class="winner-display-name">${b1}</span>
                     </div>
                     <div class="winner-row">
-                        <span class="badge ${currentViewGender === 'BOYS' ? 'badge-boy-2nd' : 'badge-girl-2nd'}">🥈 2ND PRIZE</span>
-                        <span class="winner-display-name">${val2nd}</span>
+                        <span class="badge badge-boy-2nd">👦 BOY 2ND</span>
+                        <span class="winner-display-name">${b2}</span>
+                    </div>
+                    <div class="winner-row" style="margin-top:10px;">
+                        <span class="badge badge-girl-1st">👧 GIRL 1ST</span>
+                        <span class="winner-display-name">${g1}</span>
+                    </div>
+                    <div class="winner-row">
+                        <span class="badge badge-girl-2nd">👧 GIRL 2ND</span>
+                        <span class="winner-display-name">${g2}</span>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        function goBackToViewGender() { openViewResultsMode(); }
-        function goBackToViewZone() { selectViewGender(currentViewGender); }
-        function goBackToViewClass() { selectViewZone(currentViewZone); }
-
-        // ================= MANAGE STUDENTS MODE =================
-        function openStudentsMode() {
+        // ================= 2. ADD RESULTS =================
+        function openAddClassSelect() {
             hideAll();
-            document.getElementById('students-class-select').classList.remove('hidden');
-
-            const grid = document.getElementById('students-class-grid');
-            grid.innerHTML = '';
-            allClasses.forEach(cls => {
-                let btn = document.createElement('button');
-                btn.className = 'zone-card';
-                btn.innerHTML = `<h3>${cls}</h3>`;
-                btn.onclick = () => openStudentsInput(cls);
-                grid.appendChild(btn);
-            });
+            document.getElementById('add-class-box').classList.remove('hidden');
+            renderClassGrid('add-class-grid', openAddForm);
         }
 
-        function openStudentsInput(cls) {
-            currentStudentClass = cls;
+        function openAddForm(cls) {
+            currentActiveClass = cls;
             hideAll();
-            document.getElementById('students-input-box').classList.remove('hidden');
-            document.getElementById('students-input-title').innerText = `STUDENT LIST - ${cls}`;
-
-            const savedBoys = localStorage.getItem(`${cls}_BOYS_STUDENTS`) || '';
-            const savedGirls = localStorage.getItem(`${cls}_GIRLS_STUDENTS`) || '';
-
-            document.getElementById('boys-list-input').value = savedBoys;
-            document.getElementById('girls-list-input').value = savedGirls;
-        }
-
-        function saveStudentLists() {
-            const boysVal = document.getElementById('boys-list-input').value.toUpperCase();
-            const girlsVal = document.getElementById('girls-list-input').value.toUpperCase();
-
-            localStorage.setItem(`${currentStudentClass}_BOYS_STUDENTS`, boysVal);
-            localStorage.setItem(`${currentStudentClass}_GIRLS_STUDENTS`, girlsVal);
-
-            alert('STUDENT LISTS SAVED SUCCESSFULLY!');
-        }
-
-        // ================= ADD / EDIT RESULTS MODE =================
-        function openAddResultsMode() {
-            hideAll();
-            document.getElementById('add-class').classList.remove('hidden');
-        }
-
-        function openAddResultsForClass(cls, zone) {
-            currentAddClass = cls;
-            currentAddZone = zone;
-            hideAll();
-            document.getElementById('add-form').classList.remove('hidden');
+            document.getElementById('add-form-box').classList.remove('hidden');
             document.getElementById('add-form-title').innerText = `ADD RESULTS - ${cls}`;
-            document.getElementById('add-event-tag').innerText = zone;
+            document.getElementById('add-event-tag').innerText = programsData[cls].zone;
 
             const container = document.getElementById('add-programs-container');
             container.innerHTML = '';
 
-            const progs = programsData[zone] || [];
+            const progs = programsData[cls].progs;
 
             const rawBoys = localStorage.getItem(`${cls}_BOYS_STUDENTS`) || '';
             const rawGirls = localStorage.getItem(`${cls}_GIRLS_STUDENTS`) || '';
@@ -478,10 +389,10 @@
             const girlsList = rawGirls.split('\n').map(s => s.trim().toUpperCase()).filter(s => s !== '');
 
             progs.forEach((prog, index) => {
-                const b1 = localStorage.getItem(`${cls}_${prog}_BOYS_1ST`) || '';
-                const b2 = localStorage.getItem(`${cls}_${prog}_BOYS_2ND`) || '';
-                const g1 = localStorage.getItem(`${cls}_${prog}_GIRLS_1ST`) || '';
-                const g2 = localStorage.getItem(`${cls}_${prog}_GIRLS_2ND`) || '';
+                const b1 = localStorage.getItem(`${cls}_${prog}_B1`) || '';
+                const b2 = localStorage.getItem(`${cls}_${prog}_B2`) || '';
+                const g1 = localStorage.getItem(`${cls}_${prog}_G1`) || '';
+                const g2 = localStorage.getItem(`${cls}_${prog}_G2`) || '';
 
                 let boysOpts = `<option value="">-- SELECT BOY STUDENT --</option>`;
                 boysList.forEach(st => boysOpts += `<option value="${st}">${st}</option>`);
@@ -503,7 +414,7 @@
                         <select class="name-select" id="b2_${index}">${boysOpts}</select>
                     </div>
 
-                    <div class="winner-row" style="margin-top:12px;">
+                    <div class="winner-row" style="margin-top:10px;">
                         <span class="badge badge-girl-1st">👧 GIRL 1ST</span>
                         <select class="name-select" id="g1_${index}">${girlsOpts}</select>
                     </div>
@@ -522,7 +433,8 @@
         }
 
         function saveAllResults() {
-            const progs = programsData[currentAddZone] || [];
+            const cls = currentActiveClass;
+            const progs = programsData[cls].progs;
 
             progs.forEach((prog, index) => {
                 const b1 = document.getElementById(`b1_${index}`).value;
@@ -530,16 +442,45 @@
                 const g1 = document.getElementById(`g1_${index}`).value;
                 const g2 = document.getElementById(`g2_${index}`).value;
 
-                localStorage.setItem(`${currentAddClass}_${prog}_BOYS_1ST`, b1);
-                localStorage.setItem(`${currentAddClass}_${prog}_BOYS_2ND`, b2);
-                localStorage.setItem(`${currentAddClass}_${prog}_GIRLS_1ST`, g1);
-                localStorage.setItem(`${currentAddClass}_${prog}_GIRLS_2ND`, g2);
+                localStorage.setItem(`${cls}_${prog}_B1`, b1);
+                localStorage.setItem(`${cls}_${prog}_B2`, b2);
+                localStorage.setItem(`${cls}_${prog}_G1`, g1);
+                localStorage.setItem(`${cls}_${prog}_G2`, g2);
             });
 
-            alert('ALL RESULTS SAVED SUCCESSFULLY!');
+            alert('RESULTS SAVED SUCCESSFULLY!');
         }
 
-        function goBackToAddClasses() { openAddResultsMode(); }
+        // ================= 3. MANAGE STUDENTS =================
+        function openStudentsClassSelect() {
+            hideAll();
+            document.getElementById('students-class-box').classList.remove('hidden');
+            renderClassGrid('students-class-grid', openStudentsInput);
+        }
+
+        function openStudentsInput(cls) {
+            currentActiveClass = cls;
+            hideAll();
+            document.getElementById('students-input-box').classList.remove('hidden');
+            document.getElementById('students-input-title').innerText = `STUDENT LIST - ${cls}`;
+
+            const savedBoys = localStorage.getItem(`${cls}_BOYS_STUDENTS`) || '';
+            const savedGirls = localStorage.getItem(`${cls}_GIRLS_STUDENTS`) || '';
+
+            document.getElementById('boys-list-input').value = savedBoys;
+            document.getElementById('girls-list-input').value = savedGirls;
+        }
+
+        function saveStudentLists() {
+            const cls = currentActiveClass;
+            const boysVal = document.getElementById('boys-list-input').value.toUpperCase();
+            const girlsVal = document.getElementById('girls-list-input').value.toUpperCase();
+
+            localStorage.setItem(`${cls}_BOYS_STUDENTS`, boysVal);
+            localStorage.setItem(`${cls}_GIRLS_STUDENTS`, girlsVal);
+
+            alert('STUDENT LISTS SAVED SUCCESSFULLY!');
+        }
     </script>
 
 </body>
